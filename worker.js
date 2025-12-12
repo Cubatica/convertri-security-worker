@@ -1,6 +1,6 @@
 export default {
   async fetch(request, env) {
-    // Fetch the original page from Convertri
+    // Fetch the original response from Convertri
     let response = await fetch(request);
 
     // Clone headers and add security headers
@@ -12,11 +12,11 @@ export default {
       "max-age=63072000; includeSubDomains; preload"
     );
 
-    // Content-Security-Policy (CSP)
+    // Content-Security-Policy (strict but functional for Convertri)
     headers.set(
       "Content-Security-Policy",
       "default-src 'self' https: data:; " +
-      "script-src 'self' https: 'unsafe-inline' 'unsafe-eval' blob:; " +
+      "script-src 'self' https: blob:; " +
       "object-src 'none'; " +
       "base-uri 'self'; " +
       "frame-src 'self' https:; " +

@@ -3,10 +3,10 @@ export default {
     // Fetch the original response from Convertri
     let response = await fetch(request);
 
-    // Clone headers and add security headers
+    // Clone headers and modify
     let headers = new Headers(response.headers);
 
-    // Strict-Transport-Security (HSTS) – 2 years, includes subdomains, preload
+    // Strict-Transport-Security (HSTS) – 2 years, include subdomains, preload
     headers.set(
       "Strict-Transport-Security",
       "max-age=63072000; includeSubDomains; preload"
@@ -27,7 +27,7 @@ export default {
       "frame-ancestors 'none';"
     );
 
-    // X-Frame-Options – strict clickjacking protection
+    // Force X-Frame-Options to DENY
     headers.delete("X-Frame-Options"); // remove any existing header
     headers.set("X-Frame-Options", "DENY");
 
@@ -40,10 +40,8 @@ export default {
     // X-XSS-Protection – basic XSS protection
     headers.set("X-XSS-Protection", "1; mode=block");
 
-    // Clone the response body
-    const body = response.body;
-
-    return new Response(body, {
+    // Return response
+    return new Response(response.body, {
       status: response.status,
       statusText: response.statusText,
       headers: headers

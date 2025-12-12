@@ -2,11 +2,11 @@ name = "convertri-security-worker"
 main = "worker.js"
 compatibility_date = "2024-01-01"
 
-# Uncomment and configure if you want to use routes
-# routes = [
-#   { pattern = "example.com/*", zone_name = "example.com" }
-# ]
+# Routes for the domain
+routes = [
+  { pattern = "article.wheelofcharlotte.com/*", zone_name = "wheelofcharlotte.com" }
+]
 
-# Or use workers.dev subdomain
-workers_dev = true
+# Or use workers.dev subdomain (for testing)
+# workers_dev = true
 

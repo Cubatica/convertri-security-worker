@@ -28,6 +28,7 @@ export default {
     );
 
     // X-Frame-Options – strict clickjacking protection
+    headers.delete("X-Frame-Options"); // remove any existing header
     headers.set("X-Frame-Options", "DENY");
 
     // X-Content-Type-Options – prevent MIME sniffing

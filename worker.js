@@ -12,11 +12,15 @@ export default {
       "max-age=63072000; includeSubDomains; preload"
     );
 
-    // Content-Security-Policy (strict but functional for Convertri)
+    // Content-Security-Policy (permissive for Convertri compatibility)
     headers.set(
       "Content-Security-Policy",
       "default-src 'self' https: data:; " +
-      "script-src 'self' https: blob:; " +
+      "script-src 'self' https: blob: 'unsafe-inline' 'unsafe-eval'; " +
+      "style-src 'self' https: 'unsafe-inline'; " +
+      "img-src 'self' https: data: blob:; " +
+      "font-src 'self' https: data:; " +
+      "connect-src 'self' https:; " +
       "object-src 'none'; " +
       "base-uri 'self'; " +
       "frame-src 'self' https:; " +
@@ -29,7 +33,10 @@ export default {
     // X-Content-Type-Options (prevent content sniffing)
     headers.set("X-Content-Type-Options", "nosniff");
 
-    return new Response(response.body, {
+    // Clone the response body to avoid issues
+    const body = response.body;
+    
+    return new Response(body, {
       status: response.status,
       statusText: response.statusText,
       headers: headers

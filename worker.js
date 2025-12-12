@@ -6,13 +6,13 @@ export default {
     // Clone headers and add security headers
     let headers = new Headers(response.headers);
 
-    // Strict-Transport-Security (HSTS)
+    // Strict-Transport-Security (HSTS) – 2 years, includes subdomains, preload
     headers.set(
       "Strict-Transport-Security",
       "max-age=63072000; includeSubDomains; preload"
     );
 
-    // Content-Security-Policy (permissive for Convertri compatibility)
+    // Content-Security-Policy – strict but compatible with Convertri
     headers.set(
       "Content-Security-Policy",
       "default-src 'self' https: data:; " +
@@ -27,15 +27,21 @@ export default {
       "frame-ancestors 'none';"
     );
 
-    // X-Frame-Options (Clickjacking protection)
+    // X-Frame-Options – strict clickjacking protection
     headers.set("X-Frame-Options", "DENY");
 
-    // X-Content-Type-Options (prevent content sniffing)
+    // X-Content-Type-Options – prevent MIME sniffing
     headers.set("X-Content-Type-Options", "nosniff");
 
-    // Clone the response body to avoid issues
+    // Referrer-Policy – privacy
+    headers.set("Referrer-Policy", "same-origin");
+
+    // X-XSS-Protection – basic XSS protection
+    headers.set("X-XSS-Protection", "1; mode=block");
+
+    // Clone the response body
     const body = response.body;
-    
+
     return new Response(body, {
       status: response.status,
       statusText: response.statusText,
